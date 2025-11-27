@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Estilos globales para MathLive en modo oscuro */
+math-field {
+  /* Color base que usan muchas cosas internas */
+  color: #e5e7eb; /* equivalente a text-slate-200 */
+
+  /* Paleta de colores del editor */
+  --primary: #38bdf8; /* sky-400 */
+  --caret-color: #38bdf8;
+  --selection-background-color: rgba(56, 189, 248, 0.18);
+  --selection-color: #0f172a; /* slate-900 para el texto seleccionado */
+}
+
+/* Asegurar que el contenido matemático se vea claro */
+math-field::part(content) {
+  color: #e5e7eb; /* texto de la fórmula en claro */
+}
+
