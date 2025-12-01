@@ -53,10 +53,14 @@ const MathLiveInput: React.FC<MathLiveInputProps> = ({
       </p>
 
       <div className="rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2">
+        {/* Ignora el error de JSX sólo en esta línea */}
+        {/* @ts-ignore */}
         <math-field
           ref={fieldRef}
           className="w-full min-h-[2.5rem] bg-transparent outline-none"
-        ></math-field>
+        >
+        {/* @ts-ignore */}
+        </math-field>
       </div>
 
       <div className="text-xs text-slate-400">
