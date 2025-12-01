@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
-from Taylor import generar_taylor_con_pasos
+from taylor import generar_taylor_con_pasos
 
 app = FastAPI(title="Taylor API")
 
