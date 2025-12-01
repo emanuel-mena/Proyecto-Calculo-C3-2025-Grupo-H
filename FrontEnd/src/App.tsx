@@ -1,5 +1,6 @@
-import React from "react";
 import MathLiveInput from "./components/MathLiveInput";
+//import { calcularTaylor } from "./services/taylorService";
+
 
 function App() {
   return (

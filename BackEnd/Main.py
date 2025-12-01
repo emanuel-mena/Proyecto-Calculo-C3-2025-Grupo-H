@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
-from taylor import generar_taylor_con_pasos
+from Taylor import generar_taylor_con_pasos
 
 app = FastAPI(title="Taylor API")
 
@@ -27,11 +27,21 @@ class TaylorRequest(BaseModel):
     num_points: Optional[int] = 300
 
 
+
 @app.post("/api/taylor")
 def calcular_taylor(req: TaylorRequest):
     plot_limits = None
     if req.x_min is not None and req.x_max is not None:
         plot_limits = (req.x_min, req.x_max)
+
+    num_points = req.num_points if req.num_points is not None else 300    
+
+
+    if num_points < 50 or num_points > 5000:
+        raise HTTPException(
+            status_code=400,
+            detail="num_points debe estar entre 50 y 5000"
+        )
 
     try:
         resultado = generar_taylor_con_pasos(
@@ -40,7 +50,7 @@ def calcular_taylor(req: TaylorRequest):
             x_eval=req.x_eval,
             order=req.order,
             plot_limits=plot_limits,
-            num_points=req.num_points
+            num_points=num_points
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
