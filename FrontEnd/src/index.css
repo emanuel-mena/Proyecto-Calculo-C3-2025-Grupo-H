@@ -17,3 +17,29 @@ math-field::part(content) {
   color: #e5e7eb; /* texto de la fórmula en claro */
 }
 
+/* src/index.css (o donde tengas tus estilos globales) */
+
+/* Scrollbars oscuros y finos, coherentes con el tema slate */
+.custom-scroll {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #1e293b #020617; /* thumb, track */
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background-color: rgba(15, 23, 42, 0.8); /* slate-900-ish */
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #1e293b; /* slate-800 */
+  border-radius: 9999px;
+  border: 2px solid rgba(15, 23, 42, 1); /* borde que “encaja” con el fondo */
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #38bdf8; /* sky-400 en hover */
+}
