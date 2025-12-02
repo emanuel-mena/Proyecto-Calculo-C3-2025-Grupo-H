@@ -13,7 +13,7 @@ function App() {
   const [xEval, setXEval] = useState<number>(0.5);
   const [order, setOrder] = useState<number>(5);
 
-  // =========================
+  // ========================= 
   // Hook para backend de Taylor
   // =========================
   const {
@@ -43,7 +43,7 @@ function App() {
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-xl md:text-2xl font-semibold">
-            Calculus Solver <span className="text-sky-400">/ TaylorLab</span>
+            Taylor Machine
           </h1>
           <span className="text-xs md:text-sm text-slate-400">
             Prototipo académico con MathLive + FastAPI
