@@ -1,0 +1,31 @@
+# ---- Build frontend ----
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app
+
+COPY FrontEnd/package*.json ./FrontEnd/
+RUN npm ci --prefix ./FrontEnd
+COPY FrontEnd ./FrontEnd
+RUN npm run build --prefix ./FrontEnd
+
+# ---- Runtime ----
+FROM python:3.12-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY BackEnd/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY BackEnd/ /app/
+COPY --from=frontend-builder /app/BackEnd/static /app/static
+
+ENV PORT=8000
+EXPOSE 8000
+
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
