@@ -1,7 +1,7 @@
 // src/components/ResultZone.tsx
 import React, { useState } from "react";
 import type { TaylorAnalysisResponseDTO } from "../lib/api/taylorTypes";
-import LatexDisplay from "./LatexDisplay";
+import LatexDisplay from "./LaTexDisplay";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ResultZoneProps {

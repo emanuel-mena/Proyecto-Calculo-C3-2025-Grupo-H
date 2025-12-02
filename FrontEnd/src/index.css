@@ -43,3 +43,17 @@ math-field::part(content) {
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background-color: #38bdf8; /* sky-400 en hover */
 }
+
+:root {
+  /* Rustic theme palette: usa RGB para que Tailwind pueda manejar alpha */
+  --app-bg:            24 20 16;   /* #181410 - fondo general */
+  --app-surface:       38 32 24;   /* #262018 - tarjetas */
+  --app-surface-soft:  52 44 34;   /* #342c22 */
+  --app-border:        87 65 46;   /* #57412e */
+  --app-text:          249 241 228;/* #f9f1e4 */
+  --app-muted:         190 168 140;/* #bea88c */
+  --app-accent:        201 111 54; /* #c96f36 */
+  --app-accent-soft:   155 86 44;  /* #9b562c */
+  --app-accent-strong: 222 158 75; /* #de9e4b */
+}
+
