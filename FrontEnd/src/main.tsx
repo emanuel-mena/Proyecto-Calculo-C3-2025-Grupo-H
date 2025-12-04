@@ -1,5 +1,6 @@
-import "./global-shim"; // si ya lo tienes
-import "mathlive/fonts.css"; // 👈 NUEVO: carga las fuentes correctamente
+import "./global-shim";
+import "mathlive/fonts.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";

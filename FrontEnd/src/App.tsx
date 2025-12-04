@@ -4,6 +4,8 @@ import InputZone from "./components/InputZone";
 import ProcessZone from "./components/ProcessZone";
 import ResultZone from "./components/ResultZone";
 import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Info from "./components/Info";
 
 function App() {
   // =========================
@@ -41,41 +43,12 @@ function App() {
   return (
     <div className="min-h-screen bg-[rgb(var(--app-bg))] text-[rgb(var(--app-text))]">
       {/* Header */}
-      <header className="border-b border-[rgb(var(--app-border))] bg-[rgba(var(--app-bg),0.9)] backdrop-blur">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl md:text-2xl font-semibold">
-            Taylor Machine
-          </h1>
-          <span className="text-xs md:text-sm text-[rgb(var(--app-muted))]">
-            Prototipo académico con MathLive + FastAPI
-          </span>
-        </div>
-      </header>
+      <Header />
 
       {/* Main content */}
       <main className="max-w-6xl mx-auto px-4 py-6 md:py-10 space-y-6">
-        {/* Descripción corta */}
-        <section className="bg-[rgb(var(--app-surface))] border border-[rgb(var(--app-border))] rounded-2xl p-4 md:p-5">
-          <p className="text-sm md:text-base">
-            Este prototipo conecta un editor{" "}
-            <span className="text-[rgb(var(--app-accent-strong))] font-medium">
-              MathLive
-            </span>{" "}
-            con un backend en{" "}
-            <span className="text-[rgb(var(--app-accent))] font-medium">
-              FastAPI
-            </span>{" "}
-            que calcula el polinomio de Taylor, errores y una gráfica de convergencia.
-          </p>
-          <p className="mt-2 text-xs md:text-sm text-[rgb(var(--app-muted))]">
-            Toda la lógica de comunicación con el backend se concentra en{" "}
-            <code className="text-[rgb(var(--app-accent-strong))]">
-              App.tsx
-            </code>
-            , mientras que las zonas de entrada, proceso y resultado se mantienen
-            como componentes principalmente visuales.
-          </p>
-        </section>
+        
+        <Info></Info>
 
         {/* Tres zonas: entrada / proceso / resultado */}
         <section className="grid gap-6 md:grid-cols-3">
@@ -99,8 +72,9 @@ function App() {
 
           <ResultZone loading={loading} result={result} />
         </section>
-
       </main>
+
+      <Footer></Footer>
     </div>
   );
 }

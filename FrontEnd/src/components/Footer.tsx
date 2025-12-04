@@ -3,18 +3,22 @@ export default function Footer() {
     {
       name: "Emanuel Mena",
       url: "https://github.com/emanuel-mena",
+      avatar: "https://github.com/emanuel-mena.png",
     },
     {
-      name: "Contribuidor 2",
-      url: "https://github.com/user2",
+      name: "Melina Soto",
+      url: "https://github.com/Melina2005",
+      avatar: "https://github.com/Melina2005.png",
     },
     {
-      name: "Contribuidor 3",
-      url: "https://github.com/user3",
+      name: "Oscar Vasquez",
+      url: "https://github.com/Eduard20CR",
+      avatar: "https://github.com/Eduard20CR.png",
     },
     {
-      name: "Contribuidor 4",
-      url: "https://github.com/user4",
+      name: "Alexander Segura",
+      url: "https://github.com/alexcenfotec",
+      avatar: "https://github.com/alexcenfotec.png",
     },
   ];
 
@@ -24,7 +28,7 @@ export default function Footer() {
 
         {/* Texto */}
         <p className="text-xs md:text-sm text-[rgb(var(--app-muted))] text-center md:text-left">
-          Desarrollado por el equipo · Proyecto académico 2025
+          Desarrollado por Grupo H · 2025
         </p>
 
         {/* Contribuidores */}
@@ -34,12 +38,23 @@ export default function Footer() {
               key={c.name}
               href={c.url}
               target="_blank"
-              className="flex items-center gap-2 px-3 py-1 rounded-lg border border-[rgb(var(--app-border))]
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-3 py-1 rounded-xl border border-[rgb(var(--app-border))]
                          bg-[rgb(var(--app-surface))] hover:bg-[rgba(var(--app-accent),0.15)]
-                         transition-colors text-sm"
+                         transition-all text-sm"
             >
-              <i className="bi bi-github text-lg text-[rgb(var(--app-accent))]"></i>
-              <span className="text-[rgb(var(--app-text))]">{c.name}</span>
+              {/* Avatar redondito */}
+              <img
+                src={c.avatar}
+                alt={c.name}
+                className="w-8 h-8 rounded-full object-cover border border-[rgb(var(--app-border))]"
+              />
+
+              {/* Nombre + iconito */}
+              <span className="flex items-center gap-2 text-[rgb(var(--app-text))]">
+                {c.name}
+                <i className="bi bi-github text-lg text-[rgb(var(--app-accent))]"></i>
+              </span>
             </a>
           ))}
         </div>
