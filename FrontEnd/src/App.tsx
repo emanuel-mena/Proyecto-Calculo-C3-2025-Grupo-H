@@ -3,6 +3,7 @@ import useTaylorAnalysis from "./hooks/useTaylorAnalysis";
 import InputZone from "./components/InputZone";
 import ProcessZone from "./components/ProcessZone";
 import ResultZone from "./components/ResultZone";
+import Footer from "./components/Footer";
 
 function App() {
   // =========================
@@ -98,6 +99,7 @@ function App() {
 
           <ResultZone loading={loading} result={result} />
         </section>
+
       </main>
     </div>
   );
