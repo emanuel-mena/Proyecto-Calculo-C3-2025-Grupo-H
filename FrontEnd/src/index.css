@@ -1,59 +1,195 @@
 @import "tailwindcss";
 
-/* Estilos globales para MathLive en modo oscuro */
-math-field {
-  /* Color base que usan muchas cosas internas */
-  color: #e5e7eb; /* equivalente a text-slate-200 */
+/* ============================================================
+   THEME RÚSTICO – VARIABLES GLOBALES
+   ============================================================ */
+:root {
+  /* Valores en RGB para facilitar opacidades */
+  --app-bg:            24 20 16;   /* #181410 - fondo general oscuro */
+  --app-surface:       38 32 24;   /* #262018 - superficie/tarjetas */
+  --app-surface-soft:  52 44 34;   /* #342c22 - superficie suave */
+  --app-border:        87 65 46;   /* #57412e - bordes color madera */
+  --app-text:          249 241 228;/* #f9f1e4 - texto principal crema */
+  --app-muted:         190 168 140;/* #bea88c - texto atenuado */
 
-  /* Paleta de colores del editor */
-  --primary: #38bdf8; /* sky-400 */
-  --caret-color: #38bdf8;
-  --selection-background-color: rgba(56, 189, 248, 0.18);
-  --selection-color: #0f172a; /* slate-900 para el texto seleccionado */
+  /* Acentos (cobre/ámbar) */
+  --app-accent:        201 111 54; /* #c96f36 - acento principal cobre */
+  --app-accent-soft:   155 86 44;  /* #9b562c - acento suave */
+  --app-accent-strong: 222 158 75; /* #de9e4b - acento fuerte dorado */
+  
+  /* Variables en formato hexadecimal para propiedades que no aceptan rgb() o para librerías que parsean colores */
+  --app-bg-hex: #181410;
+  --app-border-hex: #57412e;
+  --app-accent-hex: #c96f36;
+  --app-accent-strong-hex: #de9e4b;
+  --app-text-hex: #f9f1e4;
 }
 
-/* Asegurar que el contenido matemático se vea claro */
-math-field::part(content) {
-  color: #e5e7eb; /* texto de la fórmula en claro */
+/* ============================================================
+   ESTILOS GLOBALES DEL BODY
+   ============================================================ */
+body {
+  background-color: rgb(var(--app-bg));
+  color: rgb(var(--app-text));
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* src/index.css (o donde tengas tus estilos globales) */
-
-/* Scrollbars oscuros y finos, coherentes con el tema slate */
+/* ============================================================
+   SCROLLBARS – COHERENTES CON EL TEMA RÚSTICO
+   ============================================================ */
 .custom-scroll {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #1e293b #020617; /* thumb, track */
+  scrollbar-width: thin; /* Firefox - scrollbars delgadas */
+  /* Para Firefox: usar colores HEX en lugar de rgb() */
+  scrollbar-color: var(--app-border-hex) var(--app-bg-hex); /* thumb, track */
 }
 
+/* WebKit (Chrome, Safari, Edge) */
 .custom-scroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  background-color: rgba(15, 23, 42, 0.8); /* slate-900-ish */
+  background-color: rgba(var(--app-bg), 0.8);
+  border-radius: 4px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background-color: #1e293b; /* slate-800 */
+  background-color: rgb(var(--app-border));
   border-radius: 9999px;
-  border: 2px solid rgba(15, 23, 42, 1); /* borde que “encaja” con el fondo */
+  border: 2px solid rgb(var(--app-surface));
+  transition: background-color 0.2s ease;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: #38bdf8; /* sky-400 en hover */
+  background-color: rgb(var(--app-accent));
 }
 
-:root {
-  /* Rustic theme palette: usa RGB para que Tailwind pueda manejar alpha */
-  --app-bg:            24 20 16;   /* #181410 - fondo general */
-  --app-surface:       38 32 24;   /* #262018 - tarjetas */
-  --app-surface-soft:  52 44 34;   /* #342c22 */
-  --app-border:        87 65 46;   /* #57412e */
-  --app-text:          249 241 228;/* #f9f1e4 */
-  --app-muted:         190 168 140;/* #bea88c */
-  --app-accent:        201 111 54; /* #c96f36 */
-  --app-accent-soft:   155 86 44;  /* #9b562c */
-  --app-accent-strong: 222 158 75; /* #de9e4b */
+.custom-scroll::-webkit-scrollbar-corner {
+  background-color: rgb(var(--app-bg));
 }
 
+/* ============================================================
+   MATHLIVE – COMPLETAMENTE ADAPTADO AL TEMA RÚSTICO
+   ============================================================ */
+
+/* 🔹 math-field: solo tema interno, sin “caja” visual
+   Esto aplica tanto al editor grande como a los inline.
+*/
+math-field {
+  /* Variables CSS que MathLive SÍ usa internamente */
+  --primary: var(--app-accent-hex);
+  --caret-color: var(--app-accent-hex);
+
+  /* SELECCIÓN: lo realmente importante para que se vea bien */
+  --selection-background-color: var(--app-accent-strong-hex); /* fondo de selección */
+  --selection-color: var(--app-bg-hex);                        /* color del texto seleccionado */
+
+  /* Otros detalles visuales usados por MathLive */
+  --contains-highlight-background-color: rgba(0, 0, 0, 0.25);
+  --placeholder-color: rgba(var(--app-muted), 0.6);
+
+  /* Apariencia base: que herede del contenedor / Tailwind */
+  background-color: transparent;
+  color: rgb(var(--app-text));
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  box-shadow: none;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Contenido matemático (aplica también a inline) */
+math-field::part(content) {
+  color: rgb(var(--app-text));
+  /* Para el editor grande se controla el espacio desde el contenedor React */
+  padding: 0;
+  min-height: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Botones de toggle (menú y teclado virtual) - solo visibles en el editor grande */
+math-field::part(menu-toggle),
+math-field::part(virtual-keyboard-toggle) {
+  background-color: rgba(var(--app-surface-soft), 0.95);
+  color: rgb(var(--app-accent-strong));
+  border-radius: 9999px;
+  border: 1px solid rgb(var(--app-border));
+  padding: 0.25rem 0.6rem;
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+math-field::part(menu-toggle):hover,
+math-field::part(virtual-keyboard-toggle):hover {
+  background-color: rgba(var(--app-accent), 0.25);
+  color: rgb(var(--app-text));
+  border-color: rgb(var(--app-accent));
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(var(--app-accent), 0.15);
+}
+
+math-field::part(menu-toggle):active,
+math-field::part(virtual-keyboard-toggle):active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Placeholder dentro del MathField */
+math-field::part(placeholder) {
+  color: rgba(var(--app-muted), 0.7);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Parte de edición (caret) */
+math-field::part(editing) {
+  caret-color: var(--app-accent-hex);
+}
+
+/* NOTA:
+   No usamos ::selection aquí porque el contenido de MathLive está
+   en shadow DOM y MathLive ya respeta:
+   --selection-background-color y --selection-color.
+*/
+
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 640px) {
+  .custom-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  math-field::part(menu-toggle),
+  math-field::part(virtual-keyboard-toggle) {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* ============================================================
+   DARK MODE CONSISTENCY (opcional)
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(var(--app-bg));
+  }
+
+  math-field {
+    --selection-background-color: var(--app-accent-strong-hex);
+    --selection-color: var(--app-bg-hex);
+  }
+}

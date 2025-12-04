@@ -64,7 +64,7 @@ function renderStepContent(content: string) {
   const segments = splitContentWithLatex(content);
 
   return (
-    <p className="text-xs md:text-sm text-slate-200 whitespace-pre-wrap break-words leading-relaxed">
+    <p className="text-xs md:text-sm text-[rgb(var(--app-text))] whitespace-pre-wrap break-words leading-relaxed">
       {segments.map((seg, i) =>
         seg.type === "text" ? (
           <span key={i}>{seg.value}</span>
@@ -86,23 +86,23 @@ const ProcessZone: React.FC<ProcessZoneProps> = ({ loading, result }) => {
   const steps = result?.steps ?? [];
 
   return (
-    <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-4 md:p-5 shadow-lg shadow-slate-900/40 flex flex-col">
+    <div className="bg-[rgb(var(--app-surface))] border border-[rgb(var(--app-border))] rounded-2xl p-4 md:p-5 shadow-lg flex flex-col">
       <h2 className="text-lg font-semibold mb-2">Zona de proceso</h2>
-      <p className="text-xs md:text-sm text-slate-400 mb-3">
-        Aquí se muestran los pasos simbólicos que el backend ejecuta:
-        derivadas, coeficientes y construcción del polinomio de Taylor.
+      <p className="text-xs md:text-sm text-[rgb(var(--app-muted))] mb-3">
+        Aquí se muestran los pasos simbólicos que el backend ejecuta: derivadas,
+        coeficientes y construcción del polinomio de Taylor.
       </p>
 
       {/* Contenedor con scroll vertical (sin scroll horizontal) */}
-      <div className="flex-1 rounded-xl border border-slate-700 bg-slate-900/40 px-3 py-3 overflow-y-auto overflow-x-hidden max-h-[32rem] custom-scroll">
+      <div className="flex-1 rounded-xl border border-[rgb(var(--app-border))] bg-[rgba(var(--app-bg),0.6)] px-3 py-3 overflow-y-auto overflow-x-hidden max-h-[32rem] custom-scroll">
         {loading && (
-          <div className="h-full flex items-center justify-center text-xs text-slate-400">
+          <div className="h-full flex items-center justify-center text-xs text-[rgb(var(--app-muted))]">
             Procesando función y generando serie de Taylor…
           </div>
         )}
 
         {!loading && !result && (
-          <div className="h-full flex items-center justify-center text-center text-xs text-slate-500">
+          <div className="h-full flex items-center justify-center text-center text-xs text-[rgb(var(--app-muted))]">
             Ejecuta un análisis para ver el desarrollo paso a paso del polinomio
             de Taylor.
           </div>
@@ -121,10 +121,10 @@ const ProcessZone: React.FC<ProcessZoneProps> = ({ loading, result }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.25, delay: idx * 0.03 }}
-                    className="relative rounded-2xl border border-slate-700 bg-slate-900/70 px-4 py-3 shadow-sm shadow-slate-900/60"
+                    className="relative rounded-2xl border border-[rgb(var(--app-border))] bg-[rgba(var(--app-bg),0.8)] px-4 py-3 shadow-sm"
                   >
                     {index && (
-                      <div className="absolute -top-2 -left-2 inline-flex items-center justify-center rounded-full bg-sky-500 text-[11px] font-bold text-white px-2 py-0.5 shadow shadow-sky-900/70">
+                      <div className="absolute -top-2 -left-2 inline-flex items-center justify-center rounded-full bg-[rgb(var(--app-accent))] text-[11px] font-bold text-[rgb(var(--app-bg))] px-2 py-0.5 shadow">
                         {index}
                       </div>
                     )}

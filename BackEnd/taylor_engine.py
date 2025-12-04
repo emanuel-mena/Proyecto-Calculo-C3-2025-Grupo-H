@@ -1,4 +1,3 @@
-# taylor_engine.py
 from typing import List, Dict, Optional, Tuple
 import io
 import base64
@@ -15,15 +14,76 @@ from manual_diff import manual_diff_k  # derivador manual
 # Variable simbólica global
 x = sp.symbols("x")
 
+
+# ============================================================
+# Normalización de entrada y constantes
+# ============================================================
+
+def normalize_input_expression(expr_str: str) -> str:
+    """
+    Normaliza cadenas para que SymPy pueda interpretarlas correctamente.
+
+    Pensado para lo que manda MathLive:
+    - \exponentialE   -> E   (constante de Euler)
+    - \imaginaryI/J   -> I   (unidad imaginaria)
+    - \ln             -> \log (para unificar)
+    - \sen, \tg       -> \sin, \tan (aliases en español)
+    - \cdot           -> *    (por si luego usamos sympify)
+    """
+    replacements = {
+        r"\exponentialE": "E",
+        r"\imaginaryI": "I",
+        r"\imaginaryJ": "I",
+
+        # Aliases de funciones
+        r"\ln": r"\log",
+        r"\sen": r"\sin",   # por si usás notación en español
+        r"\tg": r"\tan",
+
+        # Simbolito de multiplicación
+        r"\cdot": "*",
+    }
+
+    for old, new in replacements.items():
+        expr_str = expr_str.replace(old, new)
+
+    return expr_str
+
+
+E_SYMBOLS = [sp.Symbol("e"), sp.Symbol("E")]
+
+
+def normalize_constants(expr: sp.Expr) -> sp.Expr:
+    """
+    Reemplaza símbolos que representan la constante de Euler por sympy.E.
+
+    Esto cubre casos como:
+    - e^x   -> E**x
+    - E^x   -> E**x
+    donde 'e' o 'E' hayan sido tratados como símbolos genéricos.
+    """
+    repl = {sym: sp.E for sym in E_SYMBOLS}
+    return expr.subs(repl)
+
+
+# ============================================================
 # Funciones permitidas al parsear texto
+# ============================================================
+
 _ALLOWED_LOCALS = {
     "sin": sp.sin,
     "cos": sp.cos,
     "tan": sp.tan,
+    "sen": sp.sin,   # alias español
+    "tg": sp.tan,    # alias español
+
     "exp": sp.exp,
     "log": sp.log,
+    "ln": sp.log,    # alias clásico
+
     "sqrt": sp.sqrt,
 }
+
 
 
 # ============================================================
@@ -51,6 +111,7 @@ def parse_expression_from_latex(expr_latex: str) -> sp.Expr:
         from sympy.parsing.latex import parse_latex
         return parse_latex(expr_latex)
     except Exception:
+        # Fallback: intentar interpretarlo como texto normal
         return parse_expression(expr_latex)
 
 
@@ -78,7 +139,13 @@ def compute_taylor_coefficients(
 
         # Evaluación numérica en a
         f_k_at_a = f_k.subs(x, center)
-        f_k_numeric = float(sp.N(f_k_at_a))
+        try:
+            f_k_numeric = float(sp.N(f_k_at_a))
+        except TypeError:
+            raise ValueError(
+                f"No se pudo convertir a número la derivada de orden {k} "
+                f"evaluada en a={center}: {f_k_at_a}"
+            )
 
         coef_k = f_k_numeric / factorial(k)
         coefs.append(coef_k)
@@ -156,7 +223,7 @@ def build_convergence_table(partials: List[float], exact: Optional[float]):
                 "exact": exact,
                 "abs_error": abs_err,
                 "rel_error": rel_err,
-                "rel_error_pct": rel_err * 100 if rel_err else None
+                "rel_error_pct": rel_err * 100 if rel_err is not None else None
             })
     return table
 
@@ -210,15 +277,19 @@ def generar_taylor_con_analisis(
 
     steps: List[str] = []
 
-    # 1) Parseo
+    # 1) Parseo + normalización
     if input_is_latex:
-        sym_expr = parse_expression_from_latex(expr_input)
+        expr_normalized = normalize_input_expression(expr_input)
+        sym_expr = parse_expression_from_latex(expr_normalized)
+        sym_expr = normalize_constants(sym_expr)
         steps.append(
             f"1) Parseada expresión LaTeX: {wrap_latex(expr_input)} "
             f"→ {wrap_latex(str(sym_expr))}"
         )
     else:
-        sym_expr = parse_expression(expr_input)
+        expr_normalized = normalize_input_expression(expr_input)
+        sym_expr = parse_expression(expr_normalized)
+        sym_expr = normalize_constants(sym_expr)
         steps.append(
             f"1) Parseada expresión texto: {wrap_latex(expr_input)} "
             f"→ {wrap_latex(str(sym_expr))}"
@@ -264,14 +335,26 @@ def generar_taylor_con_analisis(
     else:
         steps.append("   No se pudo calcular f'(x_eval).")
 
-    # 7) Errores
+    # 7) Errores (usar is not None para no perder el caso f_exact = 0)
     value_errors = {
-        "absolute": abs(approx_val - f_exact) if f_exact else None,
-        "relative": abs(approx_val - f_exact) / abs(f_exact) if f_exact else None,
+        "absolute": abs(approx_val - f_exact) if f_exact is not None else None,
+        "relative": (
+            abs(approx_val - f_exact) / abs(f_exact)
+            if (f_exact is not None and f_exact != 0)
+            else None
+        ),
     }
     derivative_errors = {
-        "absolute": abs(deriv_approx - deriv_exact) if deriv_exact else None,
-        "relative": abs(deriv_approx - deriv_exact) / abs(deriv_exact) if deriv_exact else None,
+        "absolute": (
+            abs(deriv_approx - deriv_exact)
+            if deriv_exact is not None
+            else None
+        ),
+        "relative": (
+            abs(deriv_approx - deriv_exact) / abs(deriv_exact)
+            if (deriv_exact is not None and deriv_exact != 0)
+            else None
+        ),
     }
 
     # 8) Tabla de convergencia

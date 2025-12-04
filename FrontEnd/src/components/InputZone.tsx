@@ -41,12 +41,16 @@ const InputZone: React.FC<InputZoneProps> = ({
   onReset,
 }) => {
   return (
-    <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-4 md:p-5 shadow-lg shadow-slate-900/40 flex flex-col gap-4">
+    <div className="bg-[rgb(var(--app-surface))] border border-[rgb(var(--app-border))] rounded-2xl p-4 md:p-5 shadow-lg flex flex-col gap-4">
       <h2 className="text-lg font-semibold">Zona de entrada</h2>
-      <p className="text-xs md:text-sm text-slate-400">
+
+      <p className="text-xs md:text-sm text-[rgb(var(--app-muted))]">
         Aquí el usuario escribe la función en notación matemática. El valor se
         guarda como LaTeX y se envía al endpoint{" "}
-        <code className="text-emerald-300">/taylor/analyze</code>.
+        <code className="text-[rgb(var(--app-accent-strong))]">
+          /taylor/analyze
+        </code>
+        .
       </p>
 
       <MathLiveInput
@@ -58,32 +62,67 @@ const InputZone: React.FC<InputZoneProps> = ({
       {/* Parámetros numéricos básicos */}
       <div className="mt-2 grid grid-cols-3 gap-3 text-xs md:text-sm">
         <div className="flex flex-col gap-1">
-          <label className="text-slate-300 font-medium">Centro (a)</label>
+          <label className="text-[rgb(var(--app-text))] font-medium">
+            Centro (a)
+          </label>
           <input
             type="number"
             value={center}
             onChange={(e) => setCenter(Number(e.target.value))}
-            className="rounded-lg bg-slate-900/80 border border-slate-700 px-2 py-1 text-xs md:text-sm outline-none focus:ring-2 focus:ring-sky-500/60"
+            className="
+              rounded-lg 
+              bg-[rgba(var(--app-bg),0.9)] 
+              border border-[rgb(var(--app-border))]
+              px-2 py-1 
+              text-xs md:text-sm 
+              outline-none 
+              focus:ring-2 
+              focus:ring-[rgba(var(--app-accent-strong),0.7)]
+            "
           />
         </div>
+
         <div className="flex flex-col gap-1">
-          <label className="text-slate-300 font-medium">x_eval</label>
+          <label className="text-[rgb(var(--app-text))] font-medium">
+            x_eval
+          </label>
           <input
             type="number"
             value={xEval}
             onChange={(e) => setXEval(Number(e.target.value))}
-            className="rounded-lg bg-slate-900/80 border border-slate-700 px-2 py-1 text-xs md:text-sm outline-none focus:ring-2 focus:ring-sky-500/60"
+            className="
+              rounded-lg 
+              bg-[rgba(var(--app-bg),0.9)] 
+              border border-[rgb(var(--app-border))]
+              px-2 py-1 
+              text-xs md:text-sm 
+              outline-none 
+              focus:ring-2 
+              focus:ring-[rgba(var(--app-accent-strong),0.7)]
+            "
           />
         </div>
+
         <div className="flex flex-col gap-1">
-          <label className="text-slate-300 font-medium">Orden (n)</label>
+          <label className="text-[rgb(var(--app-text))] font-medium">
+            Orden (n)
+          </label>
           <input
             type="number"
             min={0}
             max={50}
             value={order}
             onChange={(e) => setOrder(Number(e.target.value))}
-            className="rounded-lg bg-slate-900/80 border border-slate-700 px-2 py-1 text-xs md:text-sm outline-none focus:ring-2 focus:ring-sky-500/60"
+            className="
+              rounded-lg 
+              bg-[rgba(var(--app-bg),0.9)] 
+              border border-[rgb(var(--app-border))]
+              px-2 py-1 
+              text-xs md:text-sm 
+              outline-none 
+              focus:ring-2 
+              focus:ring-[rgba(var(--app-accent-strong),0.7)]
+            "
           />
         </div>
       </div>
@@ -93,7 +132,18 @@ const InputZone: React.FC<InputZoneProps> = ({
         <button
           onClick={onAnalyze}
           disabled={loading || !latex.trim()}
-          className="inline-flex items-center justify-center rounded-lg bg-sky-500 px-3 py-1.5 text-xs md:text-sm font-medium text-white shadow-sm shadow-sky-900/40 hover:bg-sky-400 disabled:opacity-60 disabled:cursor-not-allowed transition"
+          className="
+            inline-flex items-center justify-center
+            rounded-lg 
+            bg-[rgb(var(--app-accent))]
+            hover:bg-[rgb(var(--app-accent-soft))]
+            px-3 py-1.5 
+            text-xs md:text-sm font-medium 
+            text-[rgb(var(--app-bg))]
+            shadow-sm
+            disabled:opacity-60 disabled:cursor-not-allowed
+            transition-colors
+          "
         >
           {loading ? "Analizando..." : "Analizar con Taylor"}
         </button>
@@ -101,7 +151,16 @@ const InputZone: React.FC<InputZoneProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="inline-flex items-center justify-center rounded-lg border border-slate-600 px-3 py-1.5 text-xs md:text-sm font-medium text-slate-200 hover:bg-slate-700/60 transition"
+          className="
+            inline-flex items-center justify-center
+            rounded-lg 
+            border border-[rgb(var(--app-border))]
+            px-3 py-1.5 
+            text-xs md:text-sm font-medium 
+            text-[rgb(var(--app-text))]
+            hover:bg-[rgb(var(--app-surface-soft))]
+            transition-colors
+          "
         >
           Limpiar resultado
         </button>
@@ -116,16 +175,22 @@ const InputZone: React.FC<InputZoneProps> = ({
       )}
 
       {lastRequest && !error && (
-        <div className="mt-2 text-[11px] text-slate-500 border-t border-slate-700/70 pt-2">
-          <div className="font-semibold text-slate-300 mb-1">
+        <div className="mt-2 text-[11px] text-[rgb(var(--app-muted))] border-t border-[rgb(var(--app-border))] pt-2">
+          <div className="font-semibold text-[rgb(var(--app-text))] mb-1">
             Última petición enviada:
           </div>
           <div>
-            <span className="font-mono text-emerald-300">a = </span>
+            <span className="font-mono text-[rgb(var(--app-accent-strong))]">
+              a ={" "}
+            </span>
             {lastRequest.center}{" "}
-            <span className="font-mono text-emerald-300">, x_eval = </span>
+            <span className="font-mono text-[rgb(var(--app-accent-strong))]">
+              , x_eval ={" "}
+            </span>
             {lastRequest.x_eval}{" "}
-            <span className="font-mono text-emerald-300">, orden = </span>
+            <span className="font-mono text-[rgb(var(--app-accent-strong))]">
+              , orden ={" "}
+            </span>
             {lastRequest.order}
           </div>
         </div>
